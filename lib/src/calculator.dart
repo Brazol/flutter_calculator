@@ -198,12 +198,12 @@ class _CalculatorDialogState extends State<CalculatorDialog> {
                     children: <Widget>[
                       FlatButton(
                         child: Text(widget.cancelText ?? 'Cancel'),
-                        color: Colors.red[700],
+                        textColor: Colors.red[700],
                         onPressed: this._handleCancel,
                       ),
                       FlatButton(
                         child: Text(widget.okText ?? 'OK'),
-                        color: Colors.green[700],
+                        textColor: Colors.green[700],
                         onPressed: this._handleOk,
                       ),
                     ],
