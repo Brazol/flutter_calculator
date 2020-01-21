@@ -22,8 +22,9 @@ import './auto_size_editable_text.dart';
 
 class MathFormulaView extends StatefulWidget {
   final MathFormulaViewController controller;
+  final Color textColor;
 
-  MathFormulaView(this.controller);
+  MathFormulaView(this.controller, this.textColor);
 
   @override
   State<StatefulWidget> createState() => _MathFormulaViewState();
@@ -84,7 +85,7 @@ class _MathFormulaViewState extends State<MathFormulaView> {
       minFontSize: 12.0,
       style: TextStyle(
         fontSize: 14.0 * 2.0,
-        color: theme.primaryTextTheme.title.color,
+        color: widget.textColor,
       ),
       textAlign: TextAlign.right,
       cursorColor: Colors.grey,
@@ -161,7 +162,7 @@ String _stringifySymbols(List<MathSymbol> symbols) {
 
 int _getCharOffsetByFormulaCursor(List<MathSymbol> symbols, int cursor) {
   if (cursor == MathFormula.INVALID_CURSOR) {
-    return 1;
+    return symbols.length;
   }
 
   return symbols

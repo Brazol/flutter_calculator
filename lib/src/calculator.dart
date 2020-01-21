@@ -18,6 +18,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:tinycolor/tinycolor.dart';
 
 import './math_symbol.dart';
 import './math_formula_view.dart';
@@ -27,8 +28,9 @@ import './auto_size_editable_text.dart';
 class Calculator extends StatefulWidget {
   final String expr;
   final MathFormulaViewController formulaViewController;
+  final Color color;
 
-  Calculator({this.expr, this.formulaViewController});
+  Calculator({this.expr, this.formulaViewController, this.color});
 
   @override
   State<StatefulWidget> createState() =>
@@ -74,18 +76,20 @@ class _CalculatorState extends State<Calculator> {
     final ThemeData theme = Theme.of(context);
     double height = MediaQuery.of(context).size.height / 2.5;
 
+    Color textcolor = TinyColor(widget.color ?? theme.primaryColor).getLuminance() > 0.8 ? Colors.black : Colors.white;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Container(
           padding: const EdgeInsets.all(12.0),
-          color: theme.primaryColor,
+          color: widget.color ?? theme.primaryColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              MathFormulaView(this._formulaViewController),
+              MathFormulaView(this._formulaViewController, textcolor),
               AutoSizeEditableText(
                 readOnly: true,
                 autofocus: false,
@@ -95,7 +99,7 @@ class _CalculatorState extends State<Calculator> {
                 minFontSize: 14.0,
                 style: TextStyle(
                   fontSize: 14.0 * 3.0,
-                  color: theme.primaryTextTheme.title.color,
+                  color: textcolor,
                 ),
                 textAlign: TextAlign.right,
                 cursorColor: Colors.grey,
@@ -107,6 +111,7 @@ class _CalculatorState extends State<Calculator> {
         Container(
           height: height,
           child: KeyPad(
+            color: widget.color,
             controller: this._keyPadController,
             onPress: this._handlePressedKey,
           ),
@@ -140,8 +145,11 @@ class _CalculatorState extends State<Calculator> {
 
 class CalculatorDialog extends StatefulWidget {
   final String expr;
+  final Color color;
+  final String cancelText;
+  final String okText;
 
-  const CalculatorDialog({Key key, this.expr}) : super(key: key);
+  const CalculatorDialog({Key key, this.expr, this.color, this.cancelText, this.okText}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CalculatorDialogState(this.expr);
@@ -175,6 +183,7 @@ class _CalculatorDialogState extends State<CalculatorDialog> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Calculator(
+                color: widget.color,
                 formulaViewController: this._formulaViewController,
               ),
               Container(
@@ -188,11 +197,13 @@ class _CalculatorDialogState extends State<CalculatorDialog> {
                   child: ButtonBar(
                     children: <Widget>[
                       FlatButton(
-                        child: Text('Cancel'),
+                        child: Text(widget.cancelText ?? 'Cancel'),
+                        color: Colors.red[700],
                         onPressed: this._handleCancel,
                       ),
                       FlatButton(
-                        child: Text('OK'),
+                        child: Text(widget.okText ?? 'OK'),
+                        color: Colors.green[700],
                         onPressed: this._handleOk,
                       ),
                     ],
@@ -217,6 +228,9 @@ class _CalculatorDialogState extends State<CalculatorDialog> {
 
 Future<double> showCalculator({
   @required BuildContext context,
+  Color color,
+  String cancelText,
+  String okText,
   String expr,
   Locale locale,
   TextDirection textDirection,
@@ -226,6 +240,9 @@ Future<double> showCalculator({
 
   Widget child = CalculatorDialog(
     expr: expr,
+    cancelText: cancelText,
+    okText: okText,
+    color: color,
   );
 
   if (textDirection != null) {

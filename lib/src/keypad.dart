@@ -19,6 +19,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:tinycolor/tinycolor.dart';
 
 import './math_symbol.dart';
 
@@ -63,13 +64,13 @@ const List<MathSymbol> numberSymbols = <MathSymbol>[
   MathSymbols.zero,
 ];
 const List<MathSymbol> opSymbols = <MathSymbol>[
-  MathSymbols.percent,
+//  MathSymbols.percent,
   MathSymbols.bracket,
   MathSymbols.divide,
   MathSymbols.multiply,
   MathSymbols.minus,
   MathSymbols.plus,
-  MathSymbols.undo,
+//  MathSymbols.undo,
   MathSymbols.delete,
 ];
 
@@ -78,8 +79,9 @@ typedef MathSymbolOnPress = void Function(MathSymbol symbol);
 class KeyPad extends StatefulWidget {
   final MathSymbolOnPress onPress;
   final KeyPadController controller;
+  final Color color;
 
-  const KeyPad({Key key, @required this.onPress, this.controller}) : super(key: key);
+  const KeyPad({Key key, @required this.onPress, this.controller, this.color}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _KeyPadState();
@@ -129,14 +131,13 @@ class _KeyPadState extends State<KeyPad> {
         child: Text(
           symbol.text,
           style: TextStyle(
-            color: isClear ? theme.primaryTextTheme.title.color : Colors.grey,
+            color: isClear ? theme.primaryColor : Colors.grey,
             fontSize: 14.0 * 3.0,
           ),
         ),
       );
 
       return FlatButton(
-        color: isClear ? theme.primaryColor : null,
         shape: const CircleBorder(),
         onPressed: () => this.widget.onPress(symbol),
         child: pad,
@@ -191,10 +192,9 @@ class _KeyPadState extends State<KeyPad> {
 
     switch (symbol) {
       case MathSymbols.delete:
-        opPadColor = theme.primaryColor;
         opPad = Text(
           symbol.text,
-          style: TextStyle(color: theme.primaryTextTheme.title.color, fontSize: fontSize),
+          style: TextStyle(color: theme.primaryColor, fontSize: fontSize),
         );
         break;
       default:
