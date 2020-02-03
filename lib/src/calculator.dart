@@ -138,7 +138,7 @@ class _CalculatorState extends State<Calculator> {
     final double result = this._formulaViewController.formula.evaluate();
 
     this._formulaResultController.value = this._formulaResultController.value.copyWith(
-          text: "= ${result?.toString() ?? '0'}",
+          text: "= ${result?.floor().toString() ?? '0'}",
         );
   }
 }
