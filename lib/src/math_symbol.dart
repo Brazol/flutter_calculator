@@ -67,7 +67,7 @@ const _visibleSymbols = [
 abstract class MathSymbols {
   // Controllers
   static const MathSymbol clear = const MathSymbol('C', _MathSymbolType.controller);
-  static const MathSymbol delete = const MathSymbol('Del', _MathSymbolType.controller);
+  static const MathSymbol delete = const MathSymbol('DEL', _MathSymbolType.controller);
   static const MathSymbol redo = const MathSymbol('Redo', _MathSymbolType.controller);
   static const MathSymbol undo = const MathSymbol('Undo', _MathSymbolType.controller);
   static const MathSymbol equals = const MathSymbol('=', _MathSymbolType.controller);

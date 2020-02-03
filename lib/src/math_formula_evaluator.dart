@@ -201,6 +201,7 @@ class _Mark {
 
       return list.join();
     }
+
     return this.symbols.join();
   }
 }
